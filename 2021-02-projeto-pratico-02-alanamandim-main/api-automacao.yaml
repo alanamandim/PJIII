@@ -1,0 +1,296 @@
+openapi: '3.0.2'
+info:
+  title: Sistema de Controle de Viaturas
+  version: '1.0'
+servers:
+  - url: https://localhost/
+paths:
+  /motoristas:
+    get:
+      summary: Listar todos os motoristas cadastrados"
+      description: Retorna a lista de todos os motoristas do Sistema
+      operationId: listar_motorista
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nome_motorista:
+                      type: string
+                    id: 
+                      type: string
+                    autorizado:
+                      type: boolean
+                    
+        '400':
+          description: Requisição inválida
+
+    post:
+      summary: 'Cadastra um novo motorista'
+      operationId: adiciona_motorista
+      requestBody:
+        description: Objeto que representa o motorista a ser inserido
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome_motorista:
+                  type: string
+                id: 
+                    type: string
+                autorizado:
+                    type: boolean
+        required: true
+      responses:
+        405:
+          description: Entrada inválida
+
+    delete:
+      summary: Exclui um motorista
+      description: Apaga um motorista pelo nome
+      operationId: excluiMotorista
+      parameters:
+      - name: nome_motorista
+        in: path
+        description: nome do motorista a ser removido
+        required: true
+        schema:
+          type: string
+      responses:
+        400:
+          description: Código inválido
+          content: {}
+        404:
+          description: Motorista não encontrado
+
+  /motoristas/{id}:
+    get:
+      summary: Busca motorista pelo id
+      description: Retorna o motorista pelo id
+      operationId: obterMotoristaPeloId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+             schema:
+              type: object
+              properties:
+                nome_motorista:
+                  type: string
+                id:
+                  type: string
+                
+                autorizado:  
+                   type: boolean
+        400:
+          description: id inválido
+          content: {}
+        404:
+          description: motorista não encontrado 
+    put:
+      summary: Altera o estado de autorizado do motorista informado
+      description: realiza uma ação
+      operationId: atualizarMotoristaautorizado
+      parameters:
+      - name: id
+        in: path
+        description: id do motorista a ser mexido
+        required: true
+        schema:
+         type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome_motorista:
+                  type: string
+                id:
+                  type: string
+                autorizado:
+                   type: boolean
+        required: true
+      responses:
+        405:
+          description: Invalid input
+  /viaturas:
+    get:
+      summary: Listar todas as viaturas cadastrados"
+      description: Retorna a lista de todas as viaturas do Sistema
+      operationId: listar_viaturas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    placa:
+                      type: string
+                    id: 
+                      type: string
+                    autorizado:
+                      type: boolean
+                    
+        '400':
+          description: Requisição inválida
+
+    post:
+      summary: 'Cadastra uma nova viatura'
+      operationId: adiciona_viaturas
+      requestBody:
+        description: Objeto que representa a viatura a ser inserido
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                placa:
+                  type: string
+                id: 
+                  type: string
+                autorizado:
+                  type: boolean
+        required: true
+      responses:
+        405:
+          description: Entrada inválida
+
+    delete:
+      summary: Exclui uma viatura
+      description: Apaga uma viatura pela placa
+      operationId: excluiViatura
+      parameters:
+      - name: placa
+        in: path
+        description: placa da viatura a ser removida
+        required: true
+        schema:
+          type: string
+      responses:
+        400:
+          description: Código inválido
+          content: {}
+        404:
+          description: Viatura não encontrada
+
+  /viaturas/{id}:
+    get:
+      summary: Busca viatura pelo id
+      description: Retorna a viatura pelo id
+      operationId: obterViaturaPeloId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+             schema:
+              type: object
+              properties:
+                placa:
+                  type: string
+                id:
+                  type: string
+                
+                autorizado:  
+                   type: boolean
+        400:
+          description: id inválido
+          content: {}
+        404:
+          description: viatura não encontrada 
+    put:
+      summary: Altera o estado de autorizado da viatura informado
+      description: realiza uma ação
+      operationId: atualizarViaturaautorizado
+      parameters:
+      - name: id
+        in: path
+        description: id da viatura a ser mexido
+        required: true
+        schema:
+         type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                placa:
+                  type: string
+                id:
+                  type: string
+                autorizado:
+                   type: boolean
+        required: true
+      responses:
+        405:
+          description: Invalid input
+      
+  /solicitacoes:
+    get:
+      summary: Listar todas as solicitacoes
+      description: Retorna a lista de todos as solicitacoes em aberto do Sistema
+      operationId: listar_solicitacoes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    descricao_missao:
+                      type: string
+                    permissao:
+                      type: boolean
+                    Motoristas:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            nome_motorista:
+                              type: string
+                            id: 
+                              type: string
+                            autorizado:
+                              type: boolean
+                    Viaturas:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            placa:
+                              type: string
+                            id: 
+                              type: string
+                            autorizado:
+                              type: boolean
+    # post:                

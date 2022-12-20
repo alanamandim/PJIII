@@ -1,0 +1,92 @@
+package engtelecom.std.projetofinal.controller;
+
+
+
+import engtelecom.std.projetofinal.exceptions.MotoristaNaoEncontradoException;
+import engtelecom.std.projetofinal.exceptions.SolicitacoesNaoEncontradoException;
+import engtelecom.std.projetofinal.resources.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@RestController
+@RequestMapping("/solicitacoes") //ok
+public class SolicitacoesController {
+
+    private final List<Solicitacoes> solicitacao = new ArrayList<>();
+    
+
+    @GetMapping
+    public List<Solicitacoes>listar_solicitacoes(){
+        // Solicitacoes teste = new Solicitacoes("teste","4C7254D");
+        // solicitacao.add(teste);
+        return this.solicitacao;
+    }
+
+    @GetMapping("/{nome_motorista}") //ok
+    public Solicitacoes obterSolicitacao(@PathVariable String nome_motorista){
+        for(Solicitacoes a: this.solicitacao){
+            if(a.getNome_motorista().equals(nome_motorista)){
+                return a;
+            }
+        }
+        throw new SolicitacoesNaoEncontradoException(nome_motorista);
+    }
+    @GetMapping("/disponivel") 
+    public ArrayList<Motorista> obterTodosMotoristas(){
+        ArrayList<Motorista>copia;
+        for(Solicitacoes a: this.solicitacao){
+            if(a.getDisponivel().equals(true)){
+                copia.add(a.getMotorista);
+            }
+        return copia;
+
+        }throw new SolicitacoesNaoEncontradoException(motivomissao);
+    }
+
+
+    @PostMapping({"{motivomissao}/{id}"}) //ok
+    @ResponseStatus(HttpStatus.CREATED)
+    public Solicitacoes adicionaSolicitacao(@PathVariable String motivomissao, @PathVariable String nome_motorista ){
+        Solicitacoes x = new Solicitacoes(motivomissao,id);
+        this.solicitacao.add(x);
+        return solicitacao;
+    }
+
+    @PutMapping("{motivomissao}/aprovado") //ok
+    public Solicitacoes atualizarStatus(@PathVariable String motivomissao){
+        for (Solicitacoes a: this.solicitacao){
+            if (a.getMotivodamissao().equals(motivomissao)){
+                a.setAprovado();
+                return a;
+            }
+        }
+        throw new SolicitacoesNaoEncontradoException(motivomissao);
+    }
+
+
+    @DeleteMapping("/{motivomissao}") //ok
+    public void excluirSolicitacao(@PathVariable String motivomissao){
+        if (!this.solicitacao.removeIf(p-> p.getMotivodamissao().equals(motivomissao))){
+            throw new SolicitacoesNaoEncontradoException(motivomissao);
+        }
+    }
+    
+
+    @ControllerAdvice
+    class SolicitacoesNaoEncontrado {
+        @ResponseBody
+        @ExceptionHandler(SolicitacoesNaoEncontradoException.class)
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        String SolicitacoesNaoEncontrada(SolicitacoesNaoEncontradoException p){
+            return p.getMessage();
+        }
+    }
+
+
+
+}
+
+
