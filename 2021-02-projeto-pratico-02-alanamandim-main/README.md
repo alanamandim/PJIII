@@ -10,7 +10,7 @@ curl -L -X GET 'http://localhost:8080/motoristas'
 
 obter motorista especifico
 
-curl -L -X GET 'http://localhost:8080/motoristas/{id do motorista que deseja buscar}'
+curl -L -X GET 'http://localhost:8080/motoristas/{4C7254D}'
 
 obter solicitações
 
