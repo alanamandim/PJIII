@@ -39,7 +39,7 @@ public class MotoristaController {
             }
         
 
-        @PostMapping("{nome_ambiente}") //ok
+        @PostMapping("{nome_motorista}") //ok
         @ResponseStatus(HttpStatus.CREATED)
         public Motorista adicionaMotorista(@PathVariable String nome_motorista,  @RequestParam(value = "id")String id){
             Motorista mo = new Motorista(nome_motorista,id);

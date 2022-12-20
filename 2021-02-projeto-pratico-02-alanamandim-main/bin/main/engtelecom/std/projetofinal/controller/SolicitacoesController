@@ -47,9 +47,9 @@ public class SolicitacoesController {
     }
 
 
-    @PostMapping({"{motivomissao}/{id}"}) //ok
+    @PostMapping({"{motivomissao}"}) //ok
     @ResponseStatus(HttpStatus.CREATED)
-    public Solicitacoes adicionaSolicitacao(@PathVariable String motivomissao, @PathVariable String nome_motorista ){
+    public Solicitacoes adicionaSolicitacao(@PathVariable String motivomissao, @RequestParam (value = "id",defaultValue = " "), String id){
         Solicitacoes x = new Solicitacoes(motivomissao,id);
         this.solicitacao.add(x);
         return solicitacao;
